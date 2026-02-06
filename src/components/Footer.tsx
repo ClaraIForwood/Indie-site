@@ -13,11 +13,16 @@ export default function Footer() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const payload = {
+      email: String(formData.get("email") ?? ""),
+      message: String(formData.get("message") ?? ""),
+    };
 
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        body: formData,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -39,7 +44,7 @@ export default function Footer() {
       <div className="flex flex-col items-center gap-10">
         
         <form className="form text-left" onSubmit={handleSubmit}>
-          <div className="title">Contact us</div>
+          <div className="title" style={{ color: "#4d082a" }}>Contact Me</div>
           <input
             type="email"
             name="email"
@@ -55,7 +60,7 @@ export default function Footer() {
               {status === "success" && "Thanks! Your message has been sent."}
               {status === "error" && errorMessage}
             </p>
-            <button type="submit" disabled={status === "sending"}>
+            <button type="submit" className="bg-[#4d082a] text-white px-4 py-2 rounded-md disabled:opacity-50" disabled={status === "sending"}>
               Submit
             </button>
           </div>

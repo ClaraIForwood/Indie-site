@@ -1,24 +1,15 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+import { NextResponse } from "next/server";
 
-const { CONTACT_SMTP_HOST, CONTACT_SMTP_PORT, CONTACT_SMTP_USER, CONTACT_SMTP_PASS, CONTACT_FROM } = process.env;
-
-const CONTACT_TO = process.env.CONTACT_TO ?? "clara.forwood@gmail.com";
-
-function jsonResponse(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { "content-type": "application/json" },
-  });
-}
+const resend = new Resend(process.env.RESEND_API_KEY);
+const CONTACT_TO = process.env.CONTACT_TO?.trim() || "clara.forwood@gmail.com";
+const CONTACT_FROM = process.env.CONTACT_FROM?.trim() || "Contact Form <onboarding@resend.dev>";
 
 export async function POST(request: Request) {
-  if (!CONTACT_SMTP_HOST || !CONTACT_SMTP_PORT || !CONTACT_SMTP_USER || !CONTACT_SMTP_PASS || !CONTACT_FROM) {
-    return jsonResponse(
-      {
-        error:
-          "Email service is not configured. Please set CONTACT_SMTP_HOST, CONTACT_SMTP_PORT, CONTACT_SMTP_USER, CONTACT_SMTP_PASS, and CONTACT_FROM.",
-      },
-      500,
+  if (!process.env.RESEND_API_KEY) {
+    return NextResponse.json(
+      { error: "Email service is not configured. Please set RESEND_API_KEY." },
+      { status: 500 },
     );
   }
 
@@ -38,36 +29,33 @@ export async function POST(request: Request) {
       message = String(formData.get("message") ?? "").trim();
     }
   } catch {
-    return jsonResponse({ error: "Invalid request payload." }, 400);
+    return NextResponse.json({ error: "Invalid request payload." }, { status: 400 });
   }
 
   if (!email || !message) {
-    return jsonResponse({ error: "Email and message are required." }, 400);
+    return NextResponse.json({ error: "Email and message are required." }, { status: 400 });
   }
 
-  const port = Number(CONTACT_SMTP_PORT);
-  const transporter = nodemailer.createTransport({
-    host: CONTACT_SMTP_HOST,
-    port,
-    secure: port === 465,
-    auth: {
-      user: CONTACT_SMTP_USER,
-      pass: CONTACT_SMTP_PASS,
-    },
-  });
-
   try {
-    await transporter.sendMail({
+    const { data, error } = await resend.emails.send({
       from: CONTACT_FROM,
-      to: CONTACT_TO,
+      to: [CONTACT_TO],
+      subject: "New Contact Form Submission",
+      text: `From: ${email}\n\nMessage:\n${message}`,
       replyTo: email,
-      subject: `New message from ${email}`,
-      text: message,
     });
 
-    return jsonResponse({ ok: true });
+    if (error) {
+      console.error("Contact form email failed", error);
+      return NextResponse.json(
+        { error: error.message ?? "Unable to send message right now." },
+        { status: 502 },
+      );
+    }
+
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Contact form email failed", error);
-    return jsonResponse({ error: "Unable to send message right now." }, 500);
+    return NextResponse.json({ error: "Unable to send message right now." }, { status: 500 });
   }
 }
