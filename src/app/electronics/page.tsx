@@ -16,7 +16,7 @@ export default function ElectronicsPage() {
               alt="University of Exeter logo"
               width={280}
               height={100}
-              className="h-auto w-40 shrink-0 object-contain sm:w-[280px]"
+              className="h-auto w-40 shrink-0 object-contain sm:w-70"
               sizes="(min-width: 640px) 280px, 160px"
             />
             <div className="flex-1 text-center leading-tight sm:text-left">

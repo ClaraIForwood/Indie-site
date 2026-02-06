@@ -12,7 +12,7 @@ export default function Hero() {
         />
       </div>
       <div className="max-w-xl rounded-md px-2">
-        <h1 className="text-3xl font-bold text-neutral-900 sm:text-4xl md:text-5xl">
+        <h1 className="text-3xl font-bold text-black sm:text-4xl md:text-5xl">
           Hello World!
         </h1>
         <p className="mt-4 text-base sm:text-lg md:text-2xl">
