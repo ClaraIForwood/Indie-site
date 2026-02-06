@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type ProjectCard = {
   title: string;
@@ -36,10 +36,9 @@ type PopupProps = {
   isOpen: boolean;
   onClose: () => void;
   imageSrc: string;
-  centerText?: string;
 };
 
-function Popup({ isOpen, onClose, imageSrc, centerText = "Hi" }: PopupProps) {
+function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [size, setSize] = useState({ width: 300, height: 300 });
   const [isDragging, setIsDragging] = useState(false);
@@ -53,13 +52,18 @@ function Popup({ isOpen, onClose, imageSrc, centerText = "Hi" }: PopupProps) {
     initialY: number;
   } | null>(null);
 
-  useId();
-
   useEffect(() => {
     if (!isOpen) return;
     const updateSize = () => {
-      const width = Math.min(300, window.innerWidth - 48);
-      const height = Math.min(300, window.innerHeight - 48);
+      const maxWidth = Math.min(640, window.innerWidth - 32);
+      const maxHeight = Math.min(360, window.innerHeight - 32);
+      const targetRatio = 16 / 9;
+      let width = maxWidth;
+      let height = Math.round(width / targetRatio);
+      if (height > maxHeight) {
+        height = maxHeight;
+        width = Math.round(height * targetRatio);
+      }
       setSize({ width, height });
       setPosition({ x: (window.innerWidth - width) / 2, y: (window.innerHeight - height) / 2 });
     };
@@ -67,6 +71,17 @@ function Popup({ isOpen, onClose, imageSrc, centerText = "Hi" }: PopupProps) {
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (!isDragging) return;
@@ -100,67 +115,60 @@ function Popup({ isOpen, onClose, imageSrc, centerText = "Hi" }: PopupProps) {
   if (!isOpen) return null;
 
   return (
-    <div
-      ref={containerRef}
-      onPointerDown={(event) => {
-        if (event.button !== 0 || (event.target as HTMLElement).closest(".close-btn")) {
-          return;
-        }
-        setZIndex((current) => current + 1);
-        event.preventDefault();
-        event.currentTarget.setPointerCapture(event.pointerId);
-        setIsDragging(true);
-        dragRef.current = {
-          pointerId: event.pointerId,
-          startX: event.clientX,
-          startY: event.clientY,
-          initialX: position.x,
-          initialY: position.y,
-        };
-      }}
-      style={{
-        left: 0,
-        top: 0,
-        width: size.width,
-        height: size.height,
-        zIndex,
-        touchAction: "none",
-        position: "fixed",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-        boxSizing: "border-box",
-      }}
-      className={`relative flex flex-col overflow-hidden rounded-xl bg-green-500 border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] select-none ${
-        isDragging ? "cursor-grabbing" : "cursor-grab"
-      } transition-shadow`}
-    >
-      <div className="bg-green-600 text-white text-[8px] shrink-0 leading-none font-mono flex items-center px-2 py-0 h-3" />
-      <button
-        onClick={(event) => {
-          event.stopPropagation();
-          onClose();
+    <>
+      <div className="fixed inset-0 z-40" onClick={onClose} aria-hidden="true" />
+      <div
+        ref={containerRef}
+        onPointerDown={(event) => {
+          if (event.button !== 0 || (event.target as HTMLElement).closest(".close-btn")) {
+            return;
+          }
+          setZIndex((current) => current + 1);
+          event.preventDefault();
+          event.currentTarget.setPointerCapture(event.pointerId);
+          setIsDragging(true);
+          dragRef.current = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            initialX: position.x,
+            initialY: position.y,
+          };
         }}
-        className="close-btn absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-md bg-green-700 text-[10px] font-bold text-white shadow-sm transition hover:bg-green-800"
-        aria-label="Close popup"
+        style={{
+          left: 0,
+          top: 0,
+          width: size.width,
+          height: size.height,
+          zIndex,
+          touchAction: "none",
+          position: "fixed",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
+          boxSizing: "border-box",
+        }}
+        className={`relative flex overflow-hidden rounded-xl border-2 border-black bg-green-500 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] select-none ${
+          isDragging ? "cursor-grabbing" : "cursor-grab"
+        } transition-shadow`}
+        role="dialog"
+        aria-modal="true"
       >
-        X
-      </button>
-      <div className="relative flex-1 w-full bg-green-500 flex flex-col items-center justify-start pt-1">
-        <img
-          src={imageSrc}
-          alt="Popup Preview"
-          className="h-[25%] w-[25%] object-contain"
-          draggable="false"
-        />
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className="text-4xl font-black text-black uppercase drop-shadow-[0_2px_0_rgba(255,255,255,1)]">
-            {centerText}
-          </span>
-        </div>
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onClose();
+          }}
+          className="close-btn absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-md bg-green-700 text-[11px] font-bold text-white shadow-sm transition hover:bg-green-800"
+          aria-label="Close popup"
+        >
+          X
+        </button>
+        <img src={imageSrc} alt="Popup Preview" className="h-full w-full object-contain" draggable="false" />
       </div>
-    </div>
+    </>
   );
 }
 
