@@ -1,7 +1,5 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 const CONTACT_TO = process.env.CONTACT_TO?.trim() || "clara.forwood@gmail.com";
 const CONTACT_FROM = process.env.CONTACT_FROM?.trim() || "Contact Form <onboarding@resend.dev>";
 
@@ -12,6 +10,8 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   let email = "";
   let message = "";
