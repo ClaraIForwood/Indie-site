@@ -23,12 +23,13 @@ const PROJECTS: ProjectCard[] = [
     title: "Acting Projects",
     desc: "More will be revealed as the projects are released!",
     img: "/actor.jpg",
+    opensModal: true,
   },
   {
     title: "Crash Site",
     desc: "Indie Game dev project from game jam",
     img: "/project-crashsite.jpg",
-    opensModal: true,
+    href: "/crash-site",
   },
 ];
 

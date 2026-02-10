@@ -12,7 +12,7 @@ export default function Nav() {
         <a
           className="text-base font-semibold text-[#4d082a] hover:underline sm:text-lg md:text-5xl"
           style={{ fontFamily: "'K2D', sans-serif" }}
-          href="#contact"
+          href="/#contact"
         >
           Contact
         </a>
