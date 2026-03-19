@@ -114,13 +114,13 @@ const timelineItem = {
     opacity: 1,
     x: 0,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6 },
   },
 };
 
 const timelineLine = {
   hidden: { scaleY: 0 },
-  show: { scaleY: 1, transition: { duration: 0.9, ease: "easeOut" } },
+  show: { scaleY: 1, transition: { duration: 0.9 } },
 };
 
 const pillars = {
