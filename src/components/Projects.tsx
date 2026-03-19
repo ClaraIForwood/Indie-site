@@ -15,19 +15,19 @@ type ProjectCard = {
 const PROJECTS: ProjectCard[] = [
   {
     title: "Engineering Projects",
-    desc: "Electrical and Electronic Engineering BENG projects from university and beyond",
+    desc: "Electrical and Electronic Engineering BENG projects from University and beyond",
     img: "/project-electronics.jpg",
     href: "/electronics",
   },
   {
-    title: "Acting Projects",
-    desc: "More will be revealed as the projects are released!",
+    title: "Creative Portfolio",
+    desc: "Performance Work",
     img: "/actor.jpg",
     opensModal: true,
   },
   {
     title: "Crash Site",
-    desc: "Indie Game dev project from game jam",
+    desc: "Indie Game dev project I loved making",
     img: "/project-crashsite.jpg",
     href: "/crash-site",
   },
@@ -43,6 +43,7 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [size, setSize] = useState({ width: 300, height: 300 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [zIndex, setZIndex] = useState(50);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const dragRef = useRef<{
@@ -54,7 +55,14 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
   } | null>(null);
 
   useEffect(() => {
-    if (!isOpen) return;
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen || isMobile) return;
     const updateSize = () => {
       const maxWidth = Math.min(640, window.innerWidth - 32);
       const maxHeight = Math.min(360, window.innerHeight - 32);
@@ -71,14 +79,12 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
-  }, [isOpen]);
+  }, [isOpen, isMobile]);
 
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
+      if (event.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -115,15 +121,40 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
 
   if (!isOpen) return null;
 
+  // Mobile: fullscreen centered sheet
+  if (isMobile) {
+    return (
+      <>
+        <div className="fixed inset-0 z-40 bg-black/60" onClick={onClose} aria-hidden="true" />
+        <div
+          className="fixed inset-x-4 top-1/2 z-50 -translate-y-1/2 overflow-hidden rounded-xl border-2 border-black bg-green-500 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+          role="dialog"
+          aria-modal="true"
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-md bg-green-700 text-[11px] font-bold text-white shadow-sm transition hover:bg-green-800"
+            aria-label="Close popup"
+          >
+            X
+          </button>
+          <div className="relative aspect-video w-full">
+            <Image src={imageSrc} alt="Popup Preview" fill className="object-contain" />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Desktop: draggable popup
   return (
     <>
       <div className="fixed inset-0 z-40" onClick={onClose} aria-hidden="true" />
       <div
         ref={containerRef}
         onPointerDown={(event) => {
-          if (event.button !== 0 || (event.target as HTMLElement).closest(".close-btn")) {
-            return;
-          }
+          if (event.button !== 0 || (event.target as HTMLElement).closest(".close-btn")) return;
           setZIndex((current) => current + 1);
           event.preventDefault();
           event.currentTarget.setPointerCapture(event.pointerId);
@@ -167,7 +198,7 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
         >
           X
         </button>
-        <img src={imageSrc} alt="Popup Preview" className="h-full w-full object-contain" draggable="false" />
+        <Image src={imageSrc} alt="Popup Preview" fill className="object-contain" />
       </div>
     </>
   );

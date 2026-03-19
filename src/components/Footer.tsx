@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, type FormEvent } from "react";
 
 export default function Footer() {
@@ -68,23 +69,21 @@ export default function Footer() {
         
         <div className="flex items-center justify-center gap-8">
           <a href="https://www.linkedin.com/in/clara-forwood-5272ba268/">
-            <img
-              draggable={false}
-              alt="footer link"
-              loading="lazy"
-              decoding="async"
-              className="hidden dark:block max-w-30 h-auto mx-auto transition duration-150 ease-in-out hover:scale-110"
+            <Image
               src="/li-logo.png"
+              alt="LinkedIn"
+              width={120}
+              height={40}
+              className="hidden dark:block max-w-30 h-auto mx-auto transition duration-150 ease-in-out hover:scale-110"
             />
           </a>
           <a href="https://www.instagram.com/claraforwood/">
-            <img
-              draggable={false}
-              alt="footer link"
-              loading="lazy"
-              decoding="async"
-              className="hidden dark:block drop-shadow-sm max-w-19 h-auto mx-auto duration-150 ease-in-out transition-transform hover:scale-110"
+            <Image
               src="/instagram-logo.png"
+              alt="Instagram"
+              width={76}
+              height={76}
+              className="hidden dark:block drop-shadow-sm max-w-19 h-auto mx-auto duration-150 ease-in-out transition-transform hover:scale-110"
             />
           </a>
         </div>

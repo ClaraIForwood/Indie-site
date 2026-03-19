@@ -25,67 +25,6 @@
       </div>
     </div>
     <script>
-      (function() {
-        var OriginalAudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!OriginalAudioContext) {
-          return;
-        }
-        window.__unityAudioContexts = [];
-        window.__unityAudioMuted = false;
-        var originalResume = OriginalAudioContext.prototype.resume;
-        if (typeof originalResume === "function") {
-          OriginalAudioContext.prototype.resume = function() {
-            if (window.__unityAudioMuted) {
-              return Promise.resolve();
-            }
-            return originalResume.call(this);
-          };
-        }
-
-        function WrappedAudioContext() {
-          var ctx = new OriginalAudioContext();
-          window.__unityAudioContexts.push(ctx);
-          if (window.__unityAudioMuted && ctx && typeof ctx.suspend === "function") {
-            ctx.suspend();
-          }
-          return ctx;
-        }
-
-        WrappedAudioContext.prototype = OriginalAudioContext.prototype;
-        window.AudioContext = WrappedAudioContext;
-        if (window.webkitAudioContext) {
-          window.webkitAudioContext = WrappedAudioContext;
-        }
-
-        window.setUnityMuted = function(muted) {
-          window.__unityAudioMuted = Boolean(muted);
-          window.__unityAudioContexts.forEach(function(ctx) {
-            if (!ctx) return;
-            if (window.__unityAudioMuted && typeof ctx.suspend === "function") {
-              ctx.suspend();
-            }
-            if (!window.__unityAudioMuted && typeof ctx.resume === "function") {
-              ctx.resume();
-            }
-          });
-        };
-
-        function reapplyMute() {
-          if (window.__unityAudioMuted) {
-            window.setUnityMuted(true);
-          }
-        }
-
-        window.addEventListener("message", function(event) {
-          if (!event || !event.data || event.data.type !== "unity-mute") return;
-          window.setUnityMuted(event.data.muted);
-        });
-        window.addEventListener("focus", reapplyMute);
-        document.addEventListener("visibilitychange", function() {
-          if (!document.hidden) reapplyMute();
-        });
-      })();
-
       var canvas = document.querySelector("#unity-canvas");
 
       // Shows a temporary message banner/ribbon for a few seconds, or
@@ -165,7 +104,7 @@
 
 
       } else {
-        // Desktop style: Fill the available iframe area.
+        // Desktop style: Fill the container so the embed has no scrollbars.
         canvas.style.width = "100%";
         canvas.style.height = "100%";
       }

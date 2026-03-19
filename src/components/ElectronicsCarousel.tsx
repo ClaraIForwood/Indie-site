@@ -100,7 +100,13 @@ function Media({
 export default function ElectronicsCarousel() {
   const [index, setIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [canAutoplay, setCanAutoplay] = useState(true);
+  const [canAutoplay] = useState(() => {
+    if (typeof window === "undefined") return true;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hoverNone = window.matchMedia("(hover: none)").matches;
+    const touch = navigator.maxTouchPoints > 0;
+    return !(reduce || hoverNone || touch);
+  });
   const touchStart = useRef<number | null>(null);
   const touchMove = useRef<number | null>(null);
 
@@ -109,17 +115,19 @@ export default function ElectronicsCarousel() {
   const fadeClass = isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3";
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional hide-then-show animation
     setIsVisible(false);
     const timer = setTimeout(() => setIsVisible(true), 20);
     return () => clearTimeout(timer);
   }, [index]);
 
-  useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const hoverNone = window.matchMedia("(hover: none)").matches;
-    const touch = navigator.maxTouchPoints > 0;
-    setCanAutoplay(!(reduce || hoverNone || touch));
-  }, []);
+  const shift = (direction: "prev" | "next") => {
+    if (direction === "prev") {
+      setIndex((current) => (current - 1 + ITEMS.length) % ITEMS.length);
+    } else {
+      setIndex((current) => (current + 1) % ITEMS.length);
+    }
+  };
 
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
@@ -135,14 +143,6 @@ export default function ElectronicsCarousel() {
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
-
-  const shift = (direction: "prev" | "next") => {
-    if (direction === "prev") {
-      setIndex((current) => (current - 1 + ITEMS.length) % ITEMS.length);
-    } else {
-      setIndex((current) => (current + 1) % ITEMS.length);
-    }
-  };
 
   return (
     <section
@@ -165,12 +165,12 @@ export default function ElectronicsCarousel() {
         touchMove.current = null;
       }}
     >
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 md:flex-row md:justify-center md:gap-10">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-6 md:flex-row md:justify-between md:gap-12">
         <button
           type="button"
           onClick={() => shift("prev")}
           aria-label="Previous item"
-          className="group relative hidden h-28 w-28 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-neutral-50 transition-all duration-300 hover:scale-105 hover:shadow-sm md:flex"
+          className="group relative hidden h-32 w-32 items-center justify-center overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50 transition-all duration-300 hover:scale-105 hover:shadow-sm md:flex"
         >
           <Media
             item={ITEMS[prevIndex]}
@@ -178,9 +178,9 @@ export default function ElectronicsCarousel() {
             canAutoplay={canAutoplay}
           />
         </button>
-        <div className="flex w-full flex-col items-center gap-6 md:w-auto md:flex-row md:gap-14">
+        <div className="flex w-full flex-col items-center gap-6 md:w-auto md:flex-row md:gap-16">
           <div
-            className={`relative h-[360px] w-[260px] shrink-0 overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 shadow-lg transition-all duration-500 ease-out sm:h-[440px] sm:w-[300px] md:h-[550px] md:w-[350px] ${fadeClass}`}
+            className={`relative h-[360px] w-[280px] shrink-0 overflow-hidden rounded-xl border-2 border-neutral-200 bg-neutral-100 shadow-lg transition-all duration-500 ease-out sm:h-[440px] sm:w-[320px] md:h-[520px] md:w-[380px] ${fadeClass}`}
           >
             <Media
               item={ITEMS[index]}
@@ -191,7 +191,7 @@ export default function ElectronicsCarousel() {
             />
           </div>
           <div
-            className={`max-w-xs text-center transition-all duration-500 ease-out md:text-left ${fadeClass}`}
+            className={`max-w-sm text-center transition-all duration-500 ease-out md:max-w-md md:text-left ${fadeClass}`}
           >
             <h3 className="text-xl font-semibold">{ITEMS[index].title}</h3>
             <p className="mt-2 text-sm text-neutral-700">{ITEMS[index].description}</p>
@@ -204,7 +204,7 @@ export default function ElectronicsCarousel() {
           type="button"
           onClick={() => shift("next")}
           aria-label="Next item"
-          className="group relative hidden h-28 w-28 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-neutral-50 transition-all duration-300 hover:scale-105 hover:shadow-sm md:flex"
+          className="group relative hidden h-32 w-32 items-center justify-center overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50 transition-all duration-300 hover:scale-105 hover:shadow-sm md:flex"
         >
           <Media
             item={ITEMS[nextIndex]}

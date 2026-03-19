@@ -109,6 +109,15 @@ function StickyNote({ id, text, topOffset, rightOffset, rotation, className, lef
 export default function CrashSiteEmbed() {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
+  const [isMobile] = useState<boolean | null>(() => {
+    if (typeof navigator === "undefined") return null;
+    const ua = navigator.userAgent || navigator.vendor || "";
+    return /android|iphone|ipad|ipod|mobile/i.test(ua);
+  });
+  const [gameLoaded, setGameLoaded] = useState(false);
+  const isMobileDevice = isMobile === true;
+  const isDesktopDevice = isMobile === false;
+  const trailerEmbedUrl = "https://www.youtube.com/embed/e8fSC8T50Lw?rel=0";
 
   const sendMuteState = useCallback((muted: boolean) => {
     const frameWindow = iframeRef.current?.contentWindow;
@@ -142,30 +151,34 @@ export default function CrashSiteEmbed() {
 
   return (
     <>
-      <StickyNote
-        id="one"
-        text="Sorry if spidey is buggy he's still learning :) "
-        topOffset={160}
-        rightOffset={48}
-        rotation="rotate(-6deg)"
-      />
-      <StickyNote
-        id="two"
-        text="Artists Let's collab!      DM me ;) "
-        topOffset={360}
-        rightOffset={90}
-        rotation="rotate(5deg)"
-      />
-      <StickyNote
-        id="three"
-        text="please ignore bugs I'm working on it"
-        topOffset={0}
-        rightOffset={0}
-        leftOffset={24}
-        bottomOffset={60}
-        rotation="rotate(-4deg)"
-        className="!border-orange-200 !from-orange-200 !via-orange-100 !to-orange-300 !text-orange-900 shadow-[0_12px_24px_rgba(251,146,60,0.35)] text-sm leading-snug"
-      />
+      {isDesktopDevice && (
+        <>
+          <StickyNote
+            id="one"
+            text="Sorry if spidey is buggy he's still learning :) "
+            topOffset={160}
+            rightOffset={48}
+            rotation="rotate(-6deg)"
+          />
+          <StickyNote
+            id="two"
+            text="Artists Let's collab!      DM me ;) "
+            topOffset={360}
+            rightOffset={90}
+            rotation="rotate(5deg)"
+          />
+          <StickyNote
+            id="three"
+            text="please ignore bugs I'm working on it"
+            topOffset={0}
+            rightOffset={0}
+            leftOffset={24}
+            bottomOffset={60}
+            rotation="rotate(-4deg)"
+            className="border-orange-200! from-orange-200! via-orange-100! to-orange-300! text-orange-900! shadow-[0_12px_24px_rgba(251,146,60,0.35)] text-sm leading-snug"
+          />
+        </>
+      )}
       <section className="px-4 pt-6 pb-4 text-center">
         <h1
           className="text-3xl font-semibold sm:text-4xl"
@@ -174,31 +187,64 @@ export default function CrashSiteEmbed() {
           Crash Site
         </h1>
         <p className="mt-2 text-sm text-neutral-600 sm:text-base">
-          Play the latest WebGL build of Crash Site right in your browser.
+          {isMobileDevice
+            ? "Watch the Crash Site trailer below."
+            : "Play the latest WebGL build of Crash Site right in your browser."}
         </p>
-        <div className="mt-4 flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => setIsMuted((current) => !current)}
-            className="rounded-full border border-[#4d082a] px-4 py-1.5 text-sm font-semibold text-[#4d082a] transition hover:bg-[#4d082a] hover:text-white"
-            aria-pressed={isMuted}
-          >
-            {isMuted ? "Unmute" : "Mute"}
-          </button>
-        </div>
+        {isDesktopDevice && (
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setIsMuted((current) => !current)}
+              className="rounded-full border border-[#4d082a] px-4 py-1.5 text-sm font-semibold text-[#4d082a] transition hover:bg-[#4d082a] hover:text-white"
+              aria-pressed={isMuted}
+            >
+              {isMuted ? "Unmute" : "Mute"}
+            </button>
+          </div>
+        )}
       </section>
       <div className="flex-1 px-4 pb-6">
         <div className="mx-auto w-full max-w-[90vmin]">
-          <div className="aspect-square w-full overflow-hidden rounded-xl border border-black/10 bg-black/5 shadow-sm">
-            <iframe
-              ref={iframeRef}
-              src="/crash-site/index.html"
-              title="Crash Site WebGL"
-              className="h-full w-full border-0"
-              allow="autoplay; fullscreen; gamepad"
-              allowFullScreen
-              onLoad={() => sendMuteState(isMuted)}
-            />
+          <div className="relative aspect-8/5 w-full overflow-hidden rounded-xl border border-black/10 bg-black/5 shadow-sm">
+            {isDesktopDevice ? (
+              <>
+                {!gameLoaded && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/80 text-white">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/30 border-t-white" />
+                    <p className="text-sm font-semibold">Loading game…</p>
+                  </div>
+                )}
+                <iframe
+                  ref={iframeRef}
+                  src="/crash-site/index.html"
+                  title="Crash Site WebGL"
+                  className="h-full w-full border-0"
+                  allow="autoplay; fullscreen; gamepad"
+                  allowFullScreen
+                  onLoad={() => { setGameLoaded(true); sendMuteState(isMuted); }}
+                />
+              </>
+            ) : isMobileDevice ? (
+              <div className="flex h-full w-full items-center justify-center bg-black">
+                <div className="aspect-video w-full px-4">
+                  <iframe
+                    title="Crash Site Trailer"
+                    src={trailerEmbedUrl}
+                    className="h-full w-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="flex h-full w-full items-center justify-center p-6 text-center">
+                <p className="text-base font-semibold text-neutral-700">
+                  Preparing the Crash Site experience...
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
