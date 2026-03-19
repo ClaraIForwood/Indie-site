@@ -21,7 +21,7 @@ export default function Hero() {
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
             Engineering Portfolio
           </p>
-          <h1 className="font-display mt-4 max-w-2xl text-4xl font-semibold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
+          <h1 className="font-display mt-4 max-w-2xl text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
             I build things across hardware, software, and AI.
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-7 text-slate-600 sm:text-xl">

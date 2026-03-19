@@ -4,7 +4,7 @@ export default function Nav() {
   return (
     <header className="w-full">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 pb-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <Link className="font-display text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl" href="/">
+        <Link className="font-display text-4xl font-semibold tracking-tight text-[#4d082a] sm:text-5xl lg:text-6xl" href="/">
           Clara Forwood
         </Link>
         <nav className="flex flex-wrap items-center gap-6 text-sm font-semibold uppercase tracking-[0.18em] text-slate-600">
