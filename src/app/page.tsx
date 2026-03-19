@@ -7,10 +7,11 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <Hero />
-      <div aria-hidden="true" style={{ height: "64px" }} />
-      <Projects />
-      <Footer />
+      <main>
+        <Hero />
+        <Projects />
+        <Footer />
+      </main>
     </>
   );
 }

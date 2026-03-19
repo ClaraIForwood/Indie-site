@@ -1,5 +1,18 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Manrope, Space_Grotesk } from "next/font/google";
+
+const bodyFont = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-body",
+});
+
+const displayFont = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -25,7 +38,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased text-neutral-900">{children}</body>
+      <body
+        className={`${bodyFont.variable} ${displayFont.variable} min-h-screen bg-slate-50 text-slate-900 antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

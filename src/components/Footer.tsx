@@ -40,12 +40,42 @@ export default function Footer() {
   };
 
   return (
-    <footer id="contact" className="border-t pt-4 pb-15 text-center">
-      <h2 className="text-3xl font-semibold mb-4 pb-5 py-5">{"Let\u2019s work together!"}</h2>
-      <div className="flex flex-col items-center gap-10">
-        
+    <footer id="contact" className="border-t border-slate-200 bg-white/70">
+      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 lg:flex-row lg:items-start lg:justify-between">
+        <div className="max-w-md">
+          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500">Contact</p>
+          <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">
+            Let&apos;s work together!
+          </h2>
+          <p className="mt-3 text-base leading-7 text-slate-600">
+            Have a project in mind or want to talk through an idea? I love collaborating on ambitious, curious work.
+          </p>
+          <div className="mt-6 flex items-center gap-5">
+            <a href="https://www.linkedin.com/in/clara-forwood-5272ba268/" aria-label="LinkedIn">
+              <Image
+                src="/li-logo.png"
+                alt="LinkedIn"
+                width={120}
+                height={40}
+                className="h-auto max-w-28 transition duration-150 ease-in-out hover:scale-110"
+              />
+            </a>
+            <a href="https://www.instagram.com/claraforwood/" aria-label="Instagram">
+              <Image
+                src="/instagram-logo.png"
+                alt="Instagram"
+                width={76}
+                height={76}
+                className="h-auto max-w-20 transition duration-150 ease-in-out hover:scale-110"
+              />
+            </a>
+          </div>
+        </div>
+
         <form className="form text-left" onSubmit={handleSubmit}>
-          <div className="title" style={{ color: "#4d082a" }}>Contact Me</div>
+          <div className="title" style={{ color: "#4d082a" }}>
+            Contact Me
+          </div>
           <input
             type="email"
             name="email"
@@ -61,32 +91,15 @@ export default function Footer() {
               {status === "success" && "Thanks! Your message has been sent."}
               {status === "error" && errorMessage}
             </p>
-            <button type="submit" className="bg-[#4d082a] text-white px-4 py-2 rounded-md disabled:opacity-50" disabled={status === "sending"}>
+            <button
+              type="submit"
+              className="rounded-md bg-[#4d082a] px-4 py-2 text-white disabled:opacity-50"
+              disabled={status === "sending"}
+            >
               Submit
             </button>
           </div>
         </form>
-        
-        <div className="flex items-center justify-center gap-8">
-          <a href="https://www.linkedin.com/in/clara-forwood-5272ba268/">
-            <Image
-              src="/li-logo.png"
-              alt="LinkedIn"
-              width={120}
-              height={40}
-              className="hidden dark:block max-w-30 h-auto mx-auto transition duration-150 ease-in-out hover:scale-110"
-            />
-          </a>
-          <a href="https://www.instagram.com/claraforwood/">
-            <Image
-              src="/instagram-logo.png"
-              alt="Instagram"
-              width={76}
-              height={76}
-              className="hidden dark:block drop-shadow-sm max-w-19 h-auto mx-auto duration-150 ease-in-out transition-transform hover:scale-110"
-            />
-          </a>
-        </div>
       </div>
     </footer>
   );

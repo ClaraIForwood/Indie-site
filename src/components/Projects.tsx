@@ -2,12 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 type ProjectCard = {
   title: string;
   desc: string;
   img: string;
+  tag: string;
+  featured?: boolean;
   href?: string;
   opensModal?: boolean;
 };
@@ -15,23 +18,45 @@ type ProjectCard = {
 const PROJECTS: ProjectCard[] = [
   {
     title: "Engineering Projects",
-    desc: "Electrical and Electronic Engineering BENG projects from University and beyond",
+    desc: "Signal analysis, IR telecoms systems, and the labs that shaped my engineering instincts.",
     img: "/project-electronics.jpg",
+    tag: "Hardware",
+    featured: true,
     href: "/electronics",
   },
   {
-    title: "Creative Portfolio",
-    desc: "Performance Work",
-    img: "/actor.jpg",
-    opensModal: true,
-  },
-  {
     title: "Crash Site",
-    desc: "Indie Game dev project I loved making",
+    desc: "An indie game world built from scratch with a heavy dose of atmosphere and puzzle design.",
     img: "/project-crashsite.jpg",
+    tag: "Game Dev",
     href: "/crash-site",
   },
+  {
+    title: "Creative Portfolio",
+    desc: "Performance work that explores presence, storytelling, and embodied systems.",
+    img: "/actor.jpg",
+    tag: "Creative",
+    opensModal: true,
+  },
 ];
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.14,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+};
 
 type PopupProps = {
   isOpen: boolean;
@@ -121,25 +146,24 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
 
   if (!isOpen) return null;
 
-  // Mobile: fullscreen centered sheet
   if (isMobile) {
     return (
       <>
-        <div className="fixed inset-0 z-40 bg-black/60" onClick={onClose} aria-hidden="true" />
+        <div className="fixed inset-0 z-40 bg-slate-950/70" onClick={onClose} aria-hidden="true" />
         <div
-          className="fixed inset-x-4 top-1/2 z-50 -translate-y-1/2 overflow-hidden rounded-xl border-2 border-black bg-green-500 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+          className="fixed inset-x-4 top-1/2 z-50 -translate-y-1/2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
           role="dialog"
           aria-modal="true"
         >
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-md bg-green-700 text-[11px] font-bold text-white shadow-sm transition hover:bg-green-800"
+            className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white text-[11px] font-bold text-slate-700 shadow-sm transition hover:border-slate-400"
             aria-label="Close popup"
           >
             X
           </button>
-          <div className="relative aspect-video w-full">
+          <div className="relative aspect-video w-full bg-slate-100">
             <Image src={imageSrc} alt="Popup Preview" fill className="object-contain" />
           </div>
         </div>
@@ -147,7 +171,6 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
     );
   }
 
-  // Desktop: draggable popup
   return (
     <>
       <div className="fixed inset-0 z-40" onClick={onClose} aria-hidden="true" />
@@ -181,9 +204,9 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
           transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
           boxSizing: "border-box",
         }}
-        className={`relative flex overflow-hidden rounded-xl border-2 border-black bg-green-500 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] select-none ${
+        className={`relative flex overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl select-none ${
           isDragging ? "cursor-grabbing" : "cursor-grab"
-        } transition-shadow`}
+        }`}
         role="dialog"
         aria-modal="true"
       >
@@ -193,7 +216,7 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
             event.stopPropagation();
             onClose();
           }}
-          className="close-btn absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-md bg-green-700 text-[11px] font-bold text-white shadow-sm transition hover:bg-green-800"
+          className="close-btn absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white text-[11px] font-bold text-slate-700 shadow-sm transition hover:border-slate-400"
           aria-label="Close popup"
         >
           X
@@ -204,77 +227,98 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
   );
 }
 
-export default function ProjectGrid() {
+export default function Projects() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <section className="w-full justify-center px-4 py-12 sm:py-16">
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 justify-items-center gap-6 text-center sm:grid-cols-2 lg:grid-cols-3">
-        {PROJECTS.map(({ title, desc, img, href, opensModal }) => (
-          <article key={title} className="w-full max-w-xs sm:max-w-sm">
-            <div className="relative aspect-3/4 w-full overflow-hidden bg-neutral-100">
-              {href ? (
-                <Link className="group block h-full w-full" aria-label={`View ${title}`} href={href}>
+    <section id="projects" className="relative w-full pb-16 pt-8">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500">Selected work</p>
+            <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">
+              Projects that blend engineering with curiosity.
+            </h2>
+            <p className="mt-3 max-w-xl text-base leading-7 text-slate-600">
+              I focus on work that mixes hands-on experimentation, system thinking, and a bit of playful risk.
+            </p>
+          </div>
+          <Link
+            href="/#contact"
+            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 transition hover:text-slate-900"
+          >
+            Let&apos;s build something
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+        >
+          {PROJECTS.map(({ title, desc, img, href, opensModal, tag, featured }) => {
+            const cardClasses = `group relative flex h-full flex-col overflow-hidden rounded-2xl border ${
+              featured ? "border-[#4d082a]/40 bg-white shadow-[0_25px_50px_-40px_rgba(77,8,42,0.55)]" : "border-slate-200 bg-white"
+            } transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl`;
+
+            const imageClassName =
+              title === "Creative Portfolio"
+                ? "object-cover object-[center_20%]"
+                : "object-cover";
+
+            const content = (
+              <>
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                   <Image
                     src={img}
                     alt={title}
                     fill
-                    className="object-cover transition duration-200 ease-out group-hover:scale-[1.02]"
-                    sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
+                    className={`${imageClassName} transition duration-300 ease-out group-hover:scale-[1.05]`}
+                    sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 90vw"
                     quality={95}
                   />
-                </Link>
-              ) : opensModal ? (
-                <button
-                  type="button"
-                  className="group block h-full w-full"
-                  onClick={() => setIsOpen(true)}
-                  aria-haspopup="dialog"
-                  aria-label={`Open ${title} preview`}
-                >
-                  <Image
-                    src={img}
-                    alt={title}
-                    fill
-                    className="object-cover transition duration-200 ease-out group-hover:scale-[1.02]"
-                    sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
-                    quality={95}
-                  />
-                </button>
-              ) : (
-                <Image
-                  src={img}
-                  alt={title}
-                  fill
-                  className="object-cover"
-                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
-                  quality={95}
-                />
-              )}
-            </div>
-            {href ? (
-              <h3 className="mt-2 text-sm font-semibold text-neutral-900">
-                <Link className="hover:underline" href={href}>
-                  {title}
-                </Link>
-              </h3>
-            ) : opensModal ? (
-              <h3 className="mt-2 text-sm font-semibold text-neutral-900">
-                <button
-                  type="button"
-                  className="hover:underline"
-                  onClick={() => setIsOpen(true)}
-                  aria-haspopup="dialog"
-                >
-                  {title}
-                </button>
-              </h3>
-            ) : (
-              <h3 className="mt-2 text-sm font-semibold text-neutral-900">{title}</h3>
-            )}
-            <p className="mt-1 text-xs leading-5 text-neutral-500">{desc}</p>
-          </article>
-        ))}
+                  {featured && (
+                    <span className="absolute left-4 top-4 rounded-full bg-[#4d082a] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white">
+                      Featured
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col gap-3 p-5">
+                  <span className="inline-flex w-fit rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    {tag}
+                  </span>
+                  <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
+                  <p className="text-sm leading-6 text-slate-600">{desc}</p>
+                </div>
+              </>
+            );
+
+            return (
+              <motion.article key={title} variants={item} className={cardClasses}>
+                {href ? (
+                  <Link className="flex h-full flex-col" href={href} aria-label={`View ${title}`}>
+                    {content}
+                  </Link>
+                ) : opensModal ? (
+                  <button
+                    type="button"
+                    className="flex h-full flex-col text-left"
+                    onClick={() => setIsOpen(true)}
+                    aria-haspopup="dialog"
+                    aria-label={`Open ${title} preview`}
+                  >
+                    {content}
+                  </button>
+                ) : (
+                  content
+                )}
+              </motion.article>
+            );
+          })}
+        </motion.div>
       </div>
       <Popup isOpen={isOpen} onClose={() => setIsOpen(false)} imageSrc="/flowerPopUp.png" />
     </section>

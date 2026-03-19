@@ -1,32 +1,66 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <section className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 pt-12 pb-12 text-center sm:px-8 md:flex-row md:items-center md:gap-10 md:px-12 md:pt-20 md:pb-24 md:text-left">
-      <div
-        className="relative shrink-0 overflow-hidden rounded-full"
-        style={{ width: "clamp(180px, 55vw, 280px)", height: "clamp(180px, 55vw, 280px)" }}
-      >
-        <Image
-          src="/profile.webp"
-          alt="Clara Forwood"
-          fill
-          className="object-cover"
-          sizes="(min-width: 768px) 280px, 55vw"
-          priority
-        />
+    <section className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-40 top-12 h-72 w-72 rounded-full bg-[#4d082a]/15 blur-3xl" />
+        <div className="absolute right-0 top-24 h-80 w-80 rounded-full bg-slate-200/70 blur-[90px]" />
       </div>
-      <div className="max-w-2xl rounded-md px-2 md:flex-1">
-        <h1 className="text-3xl font-bold text-black sm:text-4xl md:text-5xl">
-          Hello World!
-        </h1>
-        <p className="mt-4 text-base sm:text-lg md:text-2xl">
-          I&apos;m an Electrical and Electronic Engineer working across hardware, software, and AI.
-          My current dissertation project is about the role of AI in finance, but I also build indie games, design circuits,
-          and chase down any technical challenge that makes me curious.
-          I believe the best engineers are the ones who can&apos;t help but tinker.
-          
-        </p>
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-10 pt-8 lg:grid-cols-[1.1fr_0.9fr] lg:pb-16 lg:pt-12">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="relative z-10"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+            Engineering Portfolio
+          </p>
+          <h1 className="font-display mt-4 max-w-2xl text-4xl font-semibold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            I build things across hardware, software, and AI.
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg leading-7 text-slate-600 sm:text-xl">
+            From circuits to code to intelligent systems — I follow curiosity wherever it leads.
+          </p>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+            I love the moment when a sketch becomes a prototype and the prototype becomes a system. I&apos;m here to
+            connect engineering rigor with playful exploration.
+          </p>
+          <div className="mt-8 flex items-center gap-3 text-sm text-slate-500">
+            <span className="h-2 w-2 rounded-full bg-[#4d082a]" />
+            Currently exploring: tactile interfaces + realtime signal analysis.
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="relative z-10 flex items-center justify-center"
+        >
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 6, repeat: Infinity }}
+            className="relative"
+          >
+            <div className="absolute -inset-6 rounded-[40px] bg-[#4d082a]/15 blur-2xl" />
+            <div className="relative h-[280px] w-[240px] overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_30px_60px_-40px_rgba(15,23,42,0.6)] sm:h-[320px] sm:w-[270px]">
+              <Image
+                src="/meAvatar.png"
+                alt="Clara Forwood"
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 320px, 70vw"
+                priority
+              />
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

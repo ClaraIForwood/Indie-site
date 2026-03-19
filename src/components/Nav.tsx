@@ -2,26 +2,20 @@ import Link from "next/link";
 
 export default function Nav() {
   return (
-    <header className="px-4 pt-4 sm:px-6">
-      <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <Link
-          className="text-2xl font-bold text-[#4d082a] sm:text-4xl md:text-6xl"
-          style={{ fontFamily: "'K2D', sans-serif" }}
-          href="/"
-        >
+    <header className="w-full">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 pb-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <Link className="font-display text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl" href="/">
           Clara Forwood
         </Link>
-        <nav className="flex flex-wrap items-center gap-4">
-          <Link
-            className="text-base font-semibold text-[#4d082a] hover:underline sm:text-lg"
-            style={{ fontFamily: "'K2D', sans-serif" }}
-            href="/availability"
-          >
+        <nav className="flex flex-wrap items-center gap-6 text-sm font-semibold uppercase tracking-[0.18em] text-slate-600">
+          <Link className="transition hover:text-slate-900" href="/#projects">
+            Work
+          </Link>
+          <Link className="transition hover:text-slate-900" href="/availability">
             Availability
           </Link>
           <Link
-            className="text-base font-semibold text-[#4d082a] hover:underline sm:text-lg"
-            style={{ fontFamily: "'K2D', sans-serif" }}
+            className="rounded-full border border-slate-900 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-900 hover:text-white"
             href="/#contact"
           >
             Contact

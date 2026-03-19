@@ -1,11 +1,19 @@
 @import "tailwindcss";
 
-h2, h3, h4, h5, h6 {
-  font-family: K2D;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 a {
-  font-family: K2D;
   text-decoration: none;
 }
 
@@ -15,15 +23,16 @@ a {
   align-items: flex-start;
   flex-direction: column;
   gap: 10px;
-  width: 300px;
+  width: 380px;
+  max-width: 90vw;
   background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 24px rgba(27, 26, 26, 0.25);
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 40px -30px rgba(15, 23, 42, 0.35);
 }
 
 .form .title {
-
   font-size: 30px;
   font-weight: 600;
   letter-spacing: -1px;
@@ -31,33 +40,34 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-display);
 }
 
 .form input {
   outline: 0;
-  border: 1px solid rgb(219, 213, 213);
-  padding: 8px 14px;
-  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  padding: 10px 14px;
+  border-radius: 10px;
   width: 100%;
   height: 50px;
 }
 
 .form textarea {
-  border-radius: 8px;
-  height: 100px;
+  border-radius: 10px;
+  height: 130px;
   width: 100%;
   resize: none;
   outline: 0;
-  padding: 8px 14px;
-  border: 1px solid rgb(219, 213, 213);
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
 }
 
 .form button {
   align-self: flex-end;
-  padding: 8px;
+  padding: 10px 16px;
   outline: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: 500;
   background-color: #4d082a;
