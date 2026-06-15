@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 
 type ProjectCard = {
   title: string;
+  subtitle?: string;
   desc: string;
   img: string;
   tag: string;
@@ -16,8 +17,9 @@ type ProjectCard = {
 
 const PROJECTS: ProjectCard[] = [
   {
-    title: "BEng Degree",
-    desc: "Signal analysis, IR telecoms systems, and the labs that shaped my engineering instincts.",
+    title: "Engineering Degree",
+    subtitle: "Electrical and Electronic Engineering",
+    desc: "I studied a wide range of electrical fundamentals from Signal analysis to Electromagnetics however in my final year I used my growing interest in AI to direct my final year thesis into Algorithmic Financial forecasting.",
     img: "/project-electronics.jpg",
     tag: "",
     href: "/dissertation",
@@ -251,7 +253,7 @@ export default function Projects() {
           viewport={{ once: true, amount: 0.2 }}
           className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
-          {PROJECTS.map(({ title, desc, img, href, opensModal, tag }) => {
+          {PROJECTS.map(({ title, subtitle, desc, img, href, opensModal, tag }) => {
             const cardClasses = "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl";
 
             const imageClassName =
@@ -278,6 +280,7 @@ export default function Projects() {
                     </span>
                   )}
                   <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
+                  {subtitle && <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">{subtitle}</p>}
                   <p className="text-sm leading-6 text-slate-600">{desc}</p>
                 </div>
               </>
