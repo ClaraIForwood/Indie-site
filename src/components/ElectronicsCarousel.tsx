@@ -18,7 +18,7 @@ const ITEMS: CarouselItem[] = [
   {
     title: "Infrared Audio Telecommunications System",
     description:
-      "Designed and implemented the modulation and demodulation subsystems for a wireless audio transmission system using infrared technology, originally conceived as a baby monitoring solution. Taking ownership of the entire receiver PCB from design through to soldering, I engineered a frequency modulation circuit using the CD74HC7046 phase-locked loop chip, achieving a 43kHz carrier frequency optimized for the IR diode's operational range. Through comprehensive circuit analysis and iterative testing, I calculated precise component values to handle human voice frequencies (50Hz-17kHz) and designed integrated low-pass filters to ensure clean signal recovery. The system successfully transmitted clear, discernible audio at the specified 10cm range. I independently validated both subsystems through oscilloscope analysis before integration, demonstrating strong analytical skills in comparing theoretical calculations against experimental results. This project showcased my ability to translate datasheets into functional circuits, debug complex signal processing chains, and deliver reliable hardware solutions within specified constraints. Developed using Multisim and Ultiboard for PCB design.",
+      "Designed and built the complete modulation and demodulation subsystems for a wireless IR audio transmitter — from datasheet to soldered PCB. Achieved a 43 kHz carrier frequency using the CD74HC7046 phase-locked loop, with integrated low-pass filters for voice frequencies (50 Hz–17 kHz). Independently validated both subsystems via oscilloscope analysis before integration, confirming clean audio at the target 10 cm range. Developed in Multisim and Ultiboard.",
     type: "image",
     src: "/project-electronics.jpg",
     alt: "Telecoms Project",
@@ -26,7 +26,7 @@ const ITEMS: CarouselItem[] = [
   {
     title: "Arduino Microcontroller Interface",
     description:
-      "Developed a button-driven interface system with real-time 7-segment LED display output as part of an embedded systems course. Implemented multiplexing techniques to efficiently control the multi-digit display while managing multiple button inputs through interrupt-driven programming. The project required careful handling of hardware interrupts to ensure responsive button detection and state machine logic to manage display states and user input sequences. Working independently, I gained hands-on experience with C++ programming for microcontrollers, exploring the ATmega328P architecture and Arduino framework internals. This project strengthened my understanding of low-level hardware-software integration, timing constraints in embedded systems, and efficient resource management in microcontroller applications. The implementation demonstrated practical skills in circuit prototyping, digital I/O control, and real-time embedded programming essential for IoT and embedded systems development.",
+      "Built a button-driven embedded interface with real-time 7-segment LED display output. Implemented multiplexing to drive a multi-digit display while handling multiple button inputs via interrupt-driven programming. Developed state machine logic for input sequences and explored ATmega328P architecture internals, strengthening skills in low-level hardware-software integration and timing constraints.",
     type: "video",
     src: "/vidArduino.mp4",
     poster: "/project-electronics.jpg",
@@ -34,7 +34,7 @@ const ITEMS: CarouselItem[] = [
   {
     title: "Signal Analysis",
     description:
-      "Conducted experimental analysis of digital baseband signalling systems using the Emona Telecoms-Trainer 101 platform. Working independently, I systematically investigated bandwidth limitation, noise, and inter-symbol interference effects on signal integrity across multiple line coding schemes (NRZ-L, RZ, Bipolar RZ, Manchester). Performed signal quality assessment through eye diagram analysis, identifying maximum sustainable bit rates and optimal threshold detection parameters for signal recovery. Demonstrated proficiency in oscilloscope operation, FFT spectral analysis, and comparative evaluation of encoding methods. Applied Shannon-Hartley theorem principles to correlate theoretical channel capacity predictions with measured experimental data. The project involved configuring voltage-controlled oscillators, tuneable low-pass filters, and comparator circuits to simulate real-world communication channel impairments, strengthening my understanding of fundamental telecommunications principles and the practical trade-offs between data rate, bandwidth, and noise immunity in digital systems.",
+      "Investigated digital baseband signalling using the Emona Telecoms-Trainer 101 — analysing bandwidth limitation, noise, and inter-symbol interference across NRZ-L, RZ, Bipolar RZ, and Manchester coding schemes via eye diagram analysis. Applied the Shannon-Hartley theorem to correlate theoretical capacity with measured data, and configured VCOs, tunable low-pass filters, and comparator circuits to simulate real-world channel impairments.",
     type: "image",
     src: "/ComsReport.jpg",
     alt: "Electronics Prototype",

@@ -16,9 +16,8 @@ export default function ElectronicsPage() {
         <Nav />
       </div>
 
-      {/* Everything below is one continuous dark canvas */}
+      {/* Credential strip on dark background, then ElectronicsPageClient manages its own section backgrounds */}
       <div className="bg-slate-950">
-        {/* UoE credential strip — same dark surface as the hero beneath it */}
         <div className="mx-auto max-w-7xl px-6 pt-6 pb-0 md:px-10">
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 px-6 py-5 backdrop-blur-sm sm:flex-row sm:gap-6">
             <Image
@@ -43,9 +42,9 @@ export default function ElectronicsPage() {
             </div>
           </div>
         </div>
-
-        <ElectronicsPageClient />
       </div>
+
+      <ElectronicsPageClient />
     </>
   );
 }

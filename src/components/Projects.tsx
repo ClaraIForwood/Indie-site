@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 type ProjectCard = {
@@ -10,32 +10,30 @@ type ProjectCard = {
   desc: string;
   img: string;
   tag: string;
-  featured?: boolean;
   href?: string;
   opensModal?: boolean;
 };
 
 const PROJECTS: ProjectCard[] = [
   {
-    title: "Engineering Projects",
+    title: "BEng Degree",
     desc: "Signal analysis, IR telecoms systems, and the labs that shaped my engineering instincts.",
     img: "/project-electronics.jpg",
-    tag: "Hardware",
-    featured: true,
-    href: "/electronics",
+    tag: "",
+    href: "/dissertation",
   },
   {
     title: "Crash Site",
     desc: "An indie game world built from scratch with a heavy dose of atmosphere and puzzle design.",
     img: "/project-crashsite.jpg",
-    tag: "Game Dev",
+    tag: "",
     href: "/crash-site",
   },
   {
     title: "Creative Portfolio",
     desc: "Performance work that explores presence, storytelling, and embodied systems.",
     img: "/actor.jpg",
-    tag: "Creative",
+    tag: "",
     opensModal: true,
   },
 ];
@@ -161,7 +159,7 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
             className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white text-[11px] font-bold text-slate-700 shadow-sm transition hover:border-slate-400"
             aria-label="Close popup"
           >
-            X
+            &times;
           </button>
           <div className="relative aspect-video w-full bg-slate-100">
             <Image src={imageSrc} alt="Popup Preview" fill className="object-contain" />
@@ -229,6 +227,7 @@ function Popup({ isOpen, onClose, imageSrc }: PopupProps) {
 
 export default function Projects() {
   const [isOpen, setIsOpen] = useState(false);
+  const shouldReduce = useReducedMotion();
 
   return (
     <section id="projects" className="relative w-full pb-16 pt-8">
@@ -243,26 +242,17 @@ export default function Projects() {
               I focus on work that mixes hands-on experimentation, system thinking, and a bit of playful risk.
             </p>
           </div>
-          <Link
-            href="/#contact"
-            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 transition hover:text-slate-900"
-          >
-            Let&apos;s build something
-            <span aria-hidden="true">→</span>
-          </Link>
         </div>
 
         <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
+          variants={shouldReduce ? undefined : container}
+          initial={shouldReduce ? false : "hidden"}
+          whileInView={shouldReduce ? undefined : "show"}
           viewport={{ once: true, amount: 0.2 }}
           className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
-          {PROJECTS.map(({ title, desc, img, href, opensModal, tag, featured }) => {
-            const cardClasses = `group relative flex h-full flex-col overflow-hidden rounded-2xl border ${
-              featured ? "border-[#4d082a]/40 bg-white shadow-[0_25px_50px_-40px_rgba(77,8,42,0.55)]" : "border-slate-200 bg-white"
-            } transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl`;
+          {PROJECTS.map(({ title, desc, img, href, opensModal, tag }) => {
+            const cardClasses = "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl";
 
             const imageClassName =
               title === "Creative Portfolio"
@@ -280,16 +270,13 @@ export default function Projects() {
                     sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 90vw"
                     quality={95}
                   />
-                  {featured && (
-                    <span className="absolute left-4 top-4 rounded-full bg-[#4d082a] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white">
-                      Featured
+                        </div>
+                <div className="flex flex-1 flex-col gap-3 p-5">
+                  {tag && (
+                    <span className="inline-flex w-fit rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      {tag}
                     </span>
                   )}
-                </div>
-                <div className="flex flex-1 flex-col gap-3 p-5">
-                  <span className="inline-flex w-fit rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    {tag}
-                  </span>
                   <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
                   <p className="text-sm leading-6 text-slate-600">{desc}</p>
                 </div>
@@ -297,7 +284,7 @@ export default function Projects() {
             );
 
             return (
-              <motion.article key={title} variants={item} className={cardClasses}>
+              <motion.article key={title} variants={shouldReduce ? undefined : item} className={cardClasses}>
                 {href ? (
                   <Link className="flex h-full flex-col" href={href} aria-label={`View ${title}`}>
                     {content}

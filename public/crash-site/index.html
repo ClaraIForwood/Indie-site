@@ -9,6 +9,32 @@
   <script src="TemplateData/profiler.js"></script>
   </head>
   <body>
+    <script>
+      // Intercept AudioContext creation so the parent page can suspend/resume
+      // Unity's audio engine via window.setUnityMuted(bool) or postMessage.
+      (function () {
+        var _contexts = [];
+        var Orig = window.AudioContext;
+        if (Orig) {
+          window.AudioContext = function AudioContext(options) {
+            var ctx = new Orig(options);
+            _contexts.push(ctx);
+            return ctx;
+          };
+          window.AudioContext.prototype = Orig.prototype;
+        }
+        window.setUnityMuted = function (muted) {
+          _contexts.forEach(function (ctx) {
+            try { muted ? ctx.suspend() : ctx.resume(); } catch (e) {}
+          });
+        };
+        window.addEventListener('message', function (event) {
+          if (event.data && event.data.type === 'unity-mute') {
+            window.setUnityMuted(event.data.muted);
+          }
+        });
+      })();
+    </script>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">

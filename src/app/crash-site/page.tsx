@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { CrashSiteEmbed } from "./ClientSections";
 
 export const metadata: Metadata = {
@@ -9,9 +10,10 @@ export const metadata: Metadata = {
 
 export default function CrashSitePage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Nav />
       <CrashSiteEmbed />
+      <Footer />
     </div>
   );
 }

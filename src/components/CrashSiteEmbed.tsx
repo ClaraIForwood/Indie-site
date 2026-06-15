@@ -97,7 +97,7 @@ function StickyNote({ id, text, topOffset, rightOffset, rotation, className, lef
       style={{
         transform: `translate3d(${position.x}px, ${position.y}px, 0) ${rotation}`,
       }}
-      className={`fixed z-40 flex h-[180px] w-[180px] select-none items-center justify-center rounded-[18px] border border-pink-200 p-3 text-center bg-gradient-to-br from-pink-200 via-pink-100 to-pink-300 text-l font-semibold text-pink-900 shadow-[0_12px_24px_rgba(236,72,153,0.35)] ${
+      className={`fixed z-40 flex h-[180px] w-[180px] select-none items-center justify-center rounded-[18px] border border-[#b8687c] p-3 text-center bg-[#cc7d90] text-l font-semibold text-[#3d0f1c] shadow-[0_6px_18px_rgba(0,0,0,0.3)] ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       } ${className ?? ""}`}
     >
@@ -109,14 +109,13 @@ function StickyNote({ id, text, topOffset, rightOffset, rotation, className, lef
 export default function CrashSiteEmbed() {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
-  const [isMobile] = useState<boolean | null>(() => {
-    if (typeof navigator === "undefined") return null;
+  const [isMobile] = useState<boolean>(() => {
     const ua = navigator.userAgent || navigator.vendor || "";
     return /android|iphone|ipad|ipod|mobile/i.test(ua);
   });
   const [gameLoaded, setGameLoaded] = useState(false);
-  const isMobileDevice = isMobile === true;
-  const isDesktopDevice = isMobile === false;
+  const isMobileDevice = isMobile;
+  const isDesktopDevice = !isMobile;
   const trailerEmbedUrl = "https://www.youtube.com/embed/e8fSC8T50Lw?rel=0";
 
   const sendMuteState = useCallback((muted: boolean) => {
@@ -127,7 +126,7 @@ export default function CrashSiteEmbed() {
     } catch {
       // Ignore cross-context errors and fall back to postMessage.
     }
-    frameWindow.postMessage({ type: "unity-mute", muted }, "*");
+    frameWindow.postMessage({ type: "unity-mute", muted }, window.location.origin);
   }, []);
 
   useEffect(() => {
@@ -175,7 +174,7 @@ export default function CrashSiteEmbed() {
             leftOffset={24}
             bottomOffset={60}
             rotation="rotate(-4deg)"
-            className="border-orange-200! from-orange-200! via-orange-100! to-orange-300! text-orange-900! shadow-[0_12px_24px_rgba(251,146,60,0.35)] text-sm leading-snug"
+            className="border-[#b07848]! bg-[#c48850]! text-[#3a1a04]! shadow-[0_6px_18px_rgba(0,0,0,0.3)]! text-sm leading-snug"
           />
         </>
       )}

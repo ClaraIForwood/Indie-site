@@ -1,0 +1,113 @@
+/* ── SANDWICH HERO ── */
+
+.section {
+  position: relative;
+  width: 100%;
+  height: 85svh;
+  min-height: 480px;
+  overflow: hidden;
+  background: #17090d;
+}
+
+/* ── LAYER 1 · PORTFOLIO (z:1) ─────────────────────────────────── */
+.portfolioText {
+  position: absolute;
+  z-index: 1;
+  top: 1%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2rem, 11vw, 18rem);
+  color: #f0dccb;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  padding: 0 2%;
+  pointer-events: none;
+  user-select: none;
+  text-shadow: 0 2px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ── LAYER 2 · CUTOUT IMAGE (z:2) ──────────────────────────────── */
+.cutoutImg {
+  position: absolute;
+  z-index: 2;
+  top: 19%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  height: 70vh;
+  width: auto;
+  max-width: 45vw;
+  pointer-events: none;
+}
+
+/* ── LAYER 3 · NAMES (z:3) ─────────────────────────────────────── */
+.nameWord {
+  position: absolute;
+  z-index: 3;
+  font-weight: 100;
+  font-size: clamp(1rem, 3.2vw, 5rem);
+  color: #ffffff;
+  letter-spacing: 0.5em;
+  line-height: 1;
+  text-transform: uppercase;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* CLARA — left side, shoulder height */
+.nameFirst {
+  left: 30vw;
+  top: 40%;
+  transform: translateY(-50%);
+  font-family: 'syne';
+  letter-spacing: 0.15em;
+}
+
+/* FORWOOD — right side, hip/thigh height */
+.nameLast {
+  right: 25vw;
+  top: 65%;
+  transform: translateY(-50%);
+  font-family: 'syne';
+  letter-spacing: 0.15em;
+}
+
+/* ── MOBILE ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .section {
+    height: 85svh;
+    min-height: 400px;
+  }
+
+  .portfolioText {
+    font-size: clamp(2rem, 17vw, 5rem);
+    top: 3%;
+  }
+
+  .cutoutImg {
+    height: 62vh;
+    max-width: 68vw;
+  }
+
+  .nameWord {
+    font-size: clamp(0.75rem, 3.8vw, 2rem);
+    letter-spacing: 0.18em;
+  }
+
+  /* Collapse to centred stack on narrow screens — no side space with 68vw photo */
+  .nameFirst {
+    left: 10%;
+    top: 80%;
+    transform: translate(-50%, -50%);
+  }
+
+  .nameLast {
+    right: auto;
+    left: 50%;
+    top: 66%;
+    transform: translate(-50%, -50%);
+  }
+}

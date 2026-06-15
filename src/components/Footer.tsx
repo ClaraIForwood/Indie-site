@@ -76,15 +76,16 @@ export default function Footer() {
           <div className="title" style={{ color: "#4d082a" }}>
             Contact Me
           </div>
+          <label htmlFor="contact-email">Email address</label>
           <input
+            id="contact-email"
             type="email"
             name="email"
-            placeholder="Your email"
-            className="input"
-            aria-label="Your email"
+            placeholder="you@example.com"
             required
           />
-          <textarea name="message" placeholder="Your message" aria-label="Your message" required />
+          <label htmlFor="contact-message">Message</label>
+          <textarea id="contact-message" name="message" placeholder="Your message" required />
           <div className="flex w-full items-center justify-between gap-3">
             <p className="text-sm text-neutral-600" aria-live="polite">
               {status === "sending" && "Sending..."}
@@ -93,7 +94,6 @@ export default function Footer() {
             </p>
             <button
               type="submit"
-              className="rounded-md bg-[#4d082a] px-4 py-2 text-white disabled:opacity-50"
               disabled={status === "sending"}
             >
               Submit

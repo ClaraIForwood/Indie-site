@@ -74,7 +74,7 @@ export default function DissertationContent() {
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">
               ECM3175 &middot; University of Exeter &middot; 2025&ndash;26
             </p>
-            <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-5xl">
               Stock Market Direction Prediction
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">
@@ -141,14 +141,14 @@ export default function DissertationContent() {
               <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">
                 Can standard ML models beat chance on daily price direction?
               </h2>
-              <p className="mt-5 text-base leading-7 text-slate-600">
+              <p className="mt-5 text-lg leading-8 text-slate-600">
                 Daily equity markets are famously noisy. This dissertation asks whether supervised learning pipelines trained on price-derived features alone can extract a statistically significant directional signal from S&amp;P 500 (SPY) next-day returns.
               </p>
-              <p className="mt-4 text-base leading-7 text-slate-600">
+              <p className="mt-4 text-lg leading-8 text-slate-600">
                 The study uses a{" "}
                 <span className="font-semibold text-slate-900">dual-task design</span> &mdash; identical features and splits feed both a binary direction classifier and a continuous return regressor, enabling direct comparison of the two paradigms on the same data.
               </p>
-              <p className="mt-4 text-base leading-7 text-slate-600">
+              <p className="mt-4 text-lg leading-8 text-slate-600">
                 Fat-tail analysis confirms the data is non-Gaussian: extreme returns are{" "}
                 <span className="font-semibold text-slate-900">6&times; to 5,000&times;</span> more frequent than a Gaussian model predicts, motivating loss functions and model choices that are robust to heavy tails.
               </p>
@@ -223,7 +223,7 @@ export default function DissertationContent() {
               <h2 className="text-3xl font-semibold text-white sm:text-4xl">54 features, zero look-ahead bias.</h2>
               <p className="mt-2 text-sm text-slate-500 sm:mt-0 sm:text-right">Computed for 16 equity symbols</p>
             </div>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-400">
               All features are constructed with strict chronological ordering across seven categories spanning price, momentum, volatility, and volume. Cross-asset context features from QQQ, IWM, EEM, and USO augment the core SPY signal.
             </p>
           </motion.div>
@@ -256,7 +256,7 @@ export default function DissertationContent() {
           >
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Data Characteristic</p>
             <p className="mt-3 text-lg font-semibold text-white">Heavy-tailed return distribution</p>
-            <p className="mt-2 text-sm leading-6 text-slate-400">
+            <p className="mt-2 text-base leading-7 text-slate-400">
               SPY daily returns are emphatically non-Gaussian. Empirical tail probabilities far exceed Gaussian predictions &mdash; a key motivation for choosing robust model architectures and evaluation metrics.
             </p>
             <div className="mt-5 flex flex-wrap gap-4">
@@ -283,7 +283,7 @@ export default function DissertationContent() {
           <motion.div {...fadeUp}>
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500">Methodology</p>
             <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">Five architectures, one benchmark.</h2>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+            <p className="mt-3 max-w-2xl text-lg leading-8 text-slate-600">
               All deep learning models share the same training infrastructure: Adam optimiser with ReduceLROnPlateau decay, early stopping at patience&nbsp;15, and gradient clipping at max&nbsp;norm&nbsp;1.0.
             </p>
           </motion.div>
@@ -305,7 +305,7 @@ export default function DissertationContent() {
           <motion.div {...fadeUp}>
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500">Empirical Results</p>
             <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">Test-set performance.</h2>
-            <p className="mt-3 max-w-xl text-base leading-7 text-slate-600">
+            <p className="mt-3 max-w-xl text-lg leading-8 text-slate-600">
               Evaluated on held-out data from 2019&ndash;01&ndash;01 to 2021&ndash;12&ndash;31 (565 trading days), unseen during training or hyperparameter selection.
             </p>
           </motion.div>
@@ -420,7 +420,7 @@ export default function DissertationContent() {
           >
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500">Proof of Work</p>
             <h3 className="mt-3 text-2xl font-semibold text-slate-900">Outputs from the dissertation.</h3>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-base text-slate-600">
               All figures generated with matplotlib and seaborn during model training and evaluation &mdash; click any to expand.
             </p>
             <FigureGallery />
@@ -436,7 +436,7 @@ export default function DissertationContent() {
             <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">
               Where do these results sit on the Efficient Market Hypothesis?
             </h2>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+            <p className="mt-3 max-w-2xl text-lg leading-8 text-slate-600">
               The semi-strong form of EMH holds that only truly non-public information can generate alpha. Our results suggest the reality lies just past that boundary &mdash; directional signal is detectable, but the magnitude of future moves is not.
             </p>
             <EMHSpectrum />
@@ -470,7 +470,7 @@ export default function DissertationContent() {
               <div key={n} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur-sm">
                 <p className="text-xl font-bold tracking-widest text-[#4d082a]/70">{n}</p>
                 <h3 className="mt-2 text-base font-semibold text-white">{title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-400">{body}</p>
+                <p className="mt-3 text-base leading-7 text-slate-400">{body}</p>
               </div>
             ))}
           </motion.div>
@@ -483,7 +483,7 @@ export default function DissertationContent() {
           <motion.div {...fadeUp}>
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500">Reproducibility</p>
             <h2 className="mt-4 text-2xl font-semibold text-slate-900">Stable across random seeds.</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
+            <p className="mt-3 text-base leading-7 text-slate-600">
               All deep learning models were evaluated across five random seeds (42, 123, 7, 2024, 99). Balanced accuracy remains tight, confirming results are not driven by lucky weight initialisations.
             </p>
           </motion.div>
@@ -590,7 +590,7 @@ export default function DissertationContent() {
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Reflection</p>
               <h2 className="mt-4 text-2xl font-semibold text-white">What I&apos;d do differently.</h2>
-              <div className="mt-6 space-y-4 text-sm leading-7 text-slate-400">
+              <div className="mt-6 space-y-4 text-base leading-8 text-slate-400">
                 <p>
                   <span className="font-semibold text-white">What worked:</span>{" "}
                   XGBoost&apos;s robustness on tabular data confirmed the literature &mdash; gradient boosted trees genuinely suit engineered financial features better than recurrent or attention architectures in the low-data regime.

@@ -1,23 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 
-export const metadata = {
-  title: "Page Not Found | Clara Forwood",
+export const metadata: Metadata = {
+  title: "Under Construction | Clara Forwood",
 };
 
-export default function NotFound() {
+export default function UnderConstruction() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Nav />
       <main id="main-content" className="flex flex-col items-center justify-center px-6 py-32 text-center">
-        <p className="font-k2d text-7xl font-bold text-[#4d082a]">
-          404
-        </p>
-        <h1 className="mt-4 text-2xl font-semibold text-neutral-800 sm:text-3xl">
-          Page not found
+        <p className="font-k2d text-7xl font-bold text-[#4d082a]">🚧</p>
+        <h1 className="mt-6 text-2xl font-semibold text-neutral-800 sm:text-3xl">
+          Under Construction
         </h1>
         <p className="mt-3 max-w-sm text-base text-neutral-500">
-          Looks like this page got lost in the crash site.
+          This page is being built. Check back soon.
         </p>
         <Link
           href="/"

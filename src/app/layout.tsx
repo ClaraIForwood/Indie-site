@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Manrope, Space_Grotesk } from "next/font/google";
+import { Manrope, Space_Grotesk, K2D } from "next/font/google";
 
 const bodyFont = Manrope({
   subsets: ["latin"],
@@ -12,6 +12,12 @@ const displayFont = Space_Grotesk({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",
+});
+
+const k2dFont = K2D({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-k2d",
 });
 
 export const metadata: Metadata = {
@@ -39,8 +45,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${bodyFont.variable} ${displayFont.variable} min-h-screen bg-slate-50 text-slate-900 antialiased`}
+        className={`${bodyFont.variable} ${displayFont.variable} ${k2dFont.variable} min-h-screen bg-slate-50 text-slate-900 antialiased`}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#4d082a] focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#4d082a]"
+        >
+          Skip to content
+        </a>
         {children}
       </body>
     </html>

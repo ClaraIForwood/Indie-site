@@ -1,7 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { Component, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -21,51 +20,13 @@ import {
   DraftingCompass,
   Radio,
 } from "lucide-react";
-import { ElectronicsCanvas, ElectronicsCarousel } from "./ClientSections";
+import { ElectronicsCarousel } from "./ClientSections";
 
 // Brand accent — the dark red from "Clara Forwood" in the nav
 const ACCENT = "#4d082a";
 // Lighter tint of the same hue, readable on dark (slate-950) backgrounds
 const ACCENT_LIGHT = "#c2526e";
 
-class CanvasErrorBoundary extends Component<
-  { children: ReactNode; fallback: ReactNode },
-  { hasError: boolean }
-> {
-  state = { hasError: false };
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: unknown) {
-    // Avoid crashing the page if the 3D model or notebook extract fails.
-    console.error("Electronics canvas failed to render", error);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
-
-function CanvasErrorFallback() {
-  return (
-    <div className="relative h-full w-full">
-      <div className="absolute inset-0 bg-slate-900/70" />
-      <div className="absolute bottom-6 left-6 right-6 z-10 rounded-2xl border border-slate-700 bg-slate-900/85 p-4 text-center backdrop-blur-sm">
-        <p className="mb-1 text-xs uppercase tracking-[0.18em]" style={{ color: ACCENT_LIGHT }}>
-          Error 404
-        </p>
-        <p className="text-sm leading-7 text-slate-200">
-          Notebook extract / 3D model failed to load.
-        </p>
-      </div>
-    </div>
-  );
-}
 
 const timeline = [
   {
@@ -241,7 +202,6 @@ type PhaseKey = keyof typeof projectPhases;
 export default function ElectronicsPageClient() {
   const [activePillar, setActivePillar] = useState<PillarKey>("Core");
   const [projectPhase, setProjectPhase] = useState<PhaseKey>("sketch");
-  const [canvasFailed, setCanvasFailed] = useState(false);
 
   const active = useMemo(() => pillars[activePillar], [activePillar]);
   const ActiveIcon = active.icon;
@@ -252,7 +212,7 @@ export default function ElectronicsPageClient() {
       {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-slate-950 pb-28 pt-10">
         <div
-          className="pointer-events-none absolute inset-0 opacity-10"
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage:
               "linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px)",
@@ -275,7 +235,6 @@ export default function ElectronicsPageClient() {
                   BEng Electrical &amp; Electronic
                 </span>
                 <span className="rounded-full border border-slate-700 px-3 py-1 text-slate-300">Personal Archive</span>
-                <span className="rounded-full border border-slate-700 px-3 py-1 text-slate-300">Lab Notes + Story</span>
               </div>
 
               <motion.h1
@@ -289,11 +248,11 @@ export default function ElectronicsPageClient() {
                 , and becoming more myself through it.
               </motion.h1>
 
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+              <p className="mt-10 max-w-2xl text-lg leading-8 text-slate-300">
                 This isn&apos;t just a list of modules. It&apos;s a personal record of how studying Electrical and Electronic Engineering at Exeter shaped the way I think, solve problems, and build things.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
+              <div className="mt-12 flex flex-wrap gap-4">
                 <a
                   href="https://www.linkedin.com/in/clara-forwood-5272ba268/"
                   target="_blank"
@@ -329,44 +288,37 @@ export default function ElectronicsPageClient() {
               </div>
             </div>
 
-            {/* 3-D canvas card */}
+            {/* Notebook quote card */}
             <div className="relative">
-              <div className="overflow-hidden rounded-[2rem] border-4 border-slate-800 bg-slate-900 shadow-2xl">
-                <div className="relative aspect-[0.95/1] flex items-center justify-center p-8">
-                  <CanvasErrorBoundary fallback={<CanvasErrorFallback />}>
-                    <>
-                      <div className="h-full w-full">
-                        <ElectronicsCanvas className="h-full w-full" onError={() => setCanvasFailed(true)} />
+              <div className="overflow-hidden rounded-[2rem] border border-slate-700 bg-slate-900 shadow-lg">
+                <div className="flex flex-col justify-between p-10" style={{ minHeight: "440px" }}>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em]" style={{ color: ACCENT_LIGHT }}>
+                      Notebook Extract
+                    </p>
+                    <p className="mt-1 text-xs text-slate-500">Clara Forwood · University of Exeter</p>
+                  </div>
+
+                  <blockquote className="my-10">
+                    <p className="text-2xl font-semibold leading-10 text-slate-100 md:text-3xl">
+                      &ldquo;I started this degree because I liked understanding how things worked. I&apos;m leaving it with something more valuable: a way of thinking.&rdquo;
+                    </p>
+                  </blockquote>
+
+                  <div className="border-t border-slate-800 pt-6">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                        style={{ backgroundColor: ACCENT }}
+                      >
+                        <NotebookPen className="h-4 w-4 text-white" />
                       </div>
-                      <div className="absolute bottom-6 left-6 right-6 z-10 rounded-2xl border border-slate-700 bg-slate-900/80 p-4 backdrop-blur-sm">
-                        {canvasFailed ? (
-                          <>
-                            <p
-                              className="mb-1 text-xs uppercase tracking-[0.18em]"
-                              style={{ color: ACCENT_LIGHT }}
-                            >
-                              Error 404
-                            </p>
-                            <p className="text-sm leading-7 text-slate-200">
-                              Notebook extract / 3D model failed to load.
-                            </p>
-                          </>
-                        ) : (
-                          <>
-                            <p
-                              className="mb-1 text-xs uppercase tracking-[0.18em]"
-                              style={{ color: ACCENT_LIGHT }}
-                            >
-                              Notebook Extract
-                            </p>
-                            <p className="text-sm leading-7 text-slate-200">
-                              I started this degree because I liked understanding how things worked. I&apos;m leaving it with something more valuable: a way of thinking.
-                            </p>
-                          </>
-                        )}
+                      <div>
+                        <p className="text-sm font-medium text-slate-300">BEng Electrical &amp; Electronic Engineering</p>
+                        <p className="text-xs text-slate-500">Class of 2026 · University of Exeter</p>
                       </div>
-                    </>
-                  </CanvasErrorBoundary>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -379,7 +331,8 @@ export default function ElectronicsPageClient() {
       </section>
 
       {/* ── Pillars ── */}
-      <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
         <div className="mb-14 text-center">
           <h2 className="text-3xl font-black tracking-tight text-slate-900 md:text-4xl">Anatomy of my degree</h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-600">
@@ -438,6 +391,7 @@ export default function ElectronicsPageClient() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
 
@@ -510,7 +464,8 @@ export default function ElectronicsPageClient() {
       </section>
 
       {/* ── What I learned + Project showcase ── */}
-      <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_0.98fr]">
           {/* Left — skills */}
           <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm md:p-8">
@@ -634,10 +589,12 @@ export default function ElectronicsPageClient() {
             </div>
           </div>
         </div>
+        </div>
       </section>
 
       {/* ── Notebook reflections ── */}
-      <section className="mx-auto max-w-7xl px-6 pb-8 md:px-10">
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-6 pb-8 md:px-10">
         <div className="rounded-[2rem] border border-stone-200 bg-white p-6 pb-7 shadow-sm md:p-8 md:pb-9">
           <div className="mb-6 flex items-center gap-3">
             <NotebookPen className="h-5 w-5 text-stone-500" />
@@ -660,6 +617,7 @@ export default function ElectronicsPageClient() {
               </motion.div>
             ))}
           </div>
+        </div>
         </div>
       </section>
 
@@ -690,7 +648,7 @@ export default function ElectronicsPageClient() {
           </p>
 
           <div className="mx-auto mb-20 grid max-w-3xl gap-4 text-left sm:grid-cols-2">
-            <a
+            <Link
               href="/crash-site"
               className="flex items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all hover:bg-slate-800"
             >
@@ -699,7 +657,7 @@ export default function ElectronicsPageClient() {
                 <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">Next up</p>
                 <p className="font-bold">See my indie game project</p>
               </div>
-            </a>
+            </Link>
             <Link
               href="/#contact"
               className="flex items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all hover:bg-slate-800"
