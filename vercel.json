@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/climate-atlas/assets/:path*", "destination": "https://climate-atlas-sooty.vercel.app/climate-atlas/assets/:path*" },
+    { "source": "/climate-atlas/data/:path*", "destination": "https://climate-atlas-sooty.vercel.app/climate-atlas/data/:path*" },
+    { "source": "/climate-atlas", "destination": "https://climate-atlas-sooty.vercel.app/climate-atlas" },
+    { "source": "/climate-atlas/", "destination": "https://climate-atlas-sooty.vercel.app/climate-atlas/" },
+    { "source": "/climate-atlas/:path*", "destination": "https://climate-atlas-sooty.vercel.app/climate-atlas/:path*" }
+  ]
+}
