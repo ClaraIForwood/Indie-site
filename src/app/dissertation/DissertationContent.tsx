@@ -257,14 +257,14 @@ export default function DissertationContent() {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Data Characteristic</p>
             <p className="mt-3 text-lg font-semibold text-white">Heavy-tailed return distribution</p>
             <p className="mt-2 text-base leading-7 text-slate-400">
-              SPY daily returns are emphatically non-Gaussian. Empirical tail probabilities far exceed Gaussian predictions &mdash; a key motivation for choosing robust model architectures and evaluation metrics.
+              SPY daily returns are emphatically non-Gaussian. Empirical tail probabilities far exceed Gaussian predictions &mdash; a key motivation for choosing robust model architectures and evaluation metrics. The effect is concentrated entirely in the tails: at 2σ the empirical rate is barely above Gaussian, showing the excess kurtosis comes from rare extreme moves rather than the bulk of the distribution.
             </p>
             <div className="mt-5 flex flex-wrap gap-4">
               {[
-                { threshold: "|r| > 2σ", factor: "2.3×" },
-                { threshold: "|r| > 3σ", factor: "6.0×" },
-                { threshold: "|r| > 4σ", factor: "48×" },
-                { threshold: "|r| > 5σ", factor: "5,368×" },
+                { threshold: "|r| > 2σ", factor: "1.11×" },
+                { threshold: "|r| > 3σ", factor: "6.02×" },
+                { threshold: "|r| > 4σ", factor: "105.28×" },
+                { threshold: "|r| > 5σ", factor: "5,368.84×" },
               ].map(({ threshold, factor }) => (
                 <div key={threshold} className="rounded-xl border border-slate-800 bg-slate-950/60 px-5 py-3 text-center">
                   <p className="text-xs text-slate-500">{threshold}</p>
