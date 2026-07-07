@@ -15,7 +15,7 @@ interface ModelRange {
 const DATA: ModelRange[] = [
   { name: "Transformer", color: "#6366f1", min: 0.503, max: 0.514, mean: 0.508, std: "±0.004" },
   { name: "MLP",         color: "#c2526e", min: 0.490, max: 0.519, mean: 0.506, std: "±0.010" },
-  { name: "LSTM",        color: "#4d082a", min: 0.490, max: 0.519, mean: 0.498, std: "±0.011" },
+  { name: "LSTM",        color: "#4d082a", min: 0.4939, max: 0.519, mean: 0.5099, std: "±0.010" },
 ];
 
 const AXIS_MIN = 0.46;

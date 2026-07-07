@@ -8,8 +8,8 @@ const MARKER_PCT = 18;
 const TAKEAWAYS = [
   {
     n: "01",
-    title: "Direction is detectably non-random",
-    body: "XGBoost's 3.6 pp edge above chance is statistically confirmed via McNemar's test (χ² = 4.83, p < 0.05) — a genuine, reproducible signal in SPY daily data.",
+    title: "A thin, unconfirmed directional edge",
+    body: "XGBoost's 3.6 pp edge above chance is not statistically significant (McNemar's χ² = 2.34, p = 0.126) — real and consistent across seeds, but indistinguishable from the majority baseline by this test.",
   },
   {
     n: "02",

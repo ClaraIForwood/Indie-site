@@ -31,7 +31,7 @@ const MODELS: ModelData[] = [
     cls: { acc: 0.536, auc: 0.545, prec: 0.616, recall: 0.518, f1: 0.563 },
     reg: { rmse: 0.0159, mae: 0.0094, r2: -0.0625 },
     cm: { tp: 170, fp: 106, fn: 158, tn: 131 },
-    insight: "Best classifier overall. Gain-based feature splits pick up Bollinger Band and moving-average mean-reversion signals that gradient boosting handles naturally on tabular data.",
+    insight: "Best classifier overall. Gain-based feature splits pick up Bollinger Band and moving-average mean-reversion signals that gradient boosting handles naturally on tabular data. Its edge over the majority baseline is not statistically significant (McNemar χ² = 2.34, p = 0.126).",
   },
   {
     name: "Transformer",
@@ -55,7 +55,7 @@ const MODELS: ModelData[] = [
     role: "Tabular deep learning reference",
     bestCls: false,
     bestReg: true,
-    cls: { acc: 0.509, auc: 0.504, prec: 0.594, recall: 0.735, f1: 0.657 },
+    cls: { acc: 0.519, auc: 0.504, prec: 0.594, recall: 0.735, f1: 0.657 },
     reg: { rmse: 0.0153, mae: 0.0092, r2: 0.0098 },
     cm: { tp: 241, fp: 165, fn: 87, tn: 72 },
     insight: "Best regressor by a thin R² margin (+0.0098 vs historical mean). Dropout regularisation avoids the Transformer's recall collapse, but the MLP still leans toward predicting 'up'.",
@@ -71,7 +71,7 @@ const MODELS: ModelData[] = [
     cls: { acc: 0.497, auc: 0.498, prec: 0.571, recall: 0.183, f1: 0.277 },
     reg: { rmse: 0.0159, mae: 0.0096, r2: -0.0667 },
     cm: { tp: 60, fp: 45, fn: 268, tn: 192 },
-    insight: "Opposite failure mode to the Transformer — extremely conservative, predicting 'down' most of the time. Significant vs majority baseline (McNemar χ² = 12.23, p = 0.0005) but low recall makes it impractical.",
+    insight: "Opposite failure mode to the Transformer — extremely conservative, predicting 'down' most of the time. Significantly worse than the majority baseline (McNemar χ² = 12.23, p = 0.0005), driven by very low recall (18.3%), not a superior error pattern.",
   },
   {
     name: "LSTM",

@@ -18,7 +18,7 @@ type RegRow = { name: string; rmse: string; mae: string; r2: string; best?: bool
 const CLASSIFICATION: ClsRow[] = [
   { name: "XGBoost", acc: "0.536", auc: "0.545", prec: "0.616", recall: "0.518", f1: "0.563", best: true },
   { name: "Transformer", acc: "0.516", auc: "0.526", prec: "0.588", recall: "0.985", f1: "0.737" },
-  { name: "MLP", acc: "0.509", auc: "0.504", prec: "0.594", recall: "0.735", f1: "0.657" },
+  { name: "MLP", acc: "0.519", auc: "0.504", prec: "0.594", recall: "0.735", f1: "0.657" },
   { name: "Logistic Regression", acc: "0.497", auc: "0.498", prec: "0.571", recall: "0.183", f1: "0.277" },
   { name: "LSTM", acc: "0.484", auc: "0.507", prec: "0.565", recall: "0.488", f1: "0.524" },
   { name: "Majority Baseline", acc: "0.500", auc: "—", prec: "0.581", recall: "1.000", f1: "0.735", baseline: true },
@@ -186,7 +186,7 @@ export default function DissertationContent() {
                       transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     />
                   </div>
-                  <p className="mt-2 text-[11px] text-slate-400">+3.6 pp above chance &middot; McNemar &chi;&sup2; = 4.83, p &lt; 0.05</p>
+                  <p className="mt-2 text-[11px] text-slate-400">+3.6 pp above chance &middot; not statistically significant (McNemar &chi;&sup2; = 2.34, p = 0.126)</p>
                 </div>
               </div>
 
@@ -195,9 +195,9 @@ export default function DissertationContent() {
                 <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Chronological Data Split</p>
                 <div className="flex flex-col gap-2">
                   {[
-                    { label: "Train", range: "2010 – 2016", rows: "1,760 rows", pct: "58%", dot: "bg-slate-600" },
-                    { label: "Validation", range: "2017 – 2018", rows: "502 rows", pct: "17%", dot: "bg-[#c2526e]" },
-                    { label: "Test", range: "2019 – 2021", rows: "565 rows", pct: "19%", dot: "bg-[#4d082a]" },
+                    { label: "Train", range: "1998 – 2016", rows: "4,732 rows", pct: "82%", dot: "bg-slate-600" },
+                    { label: "Validation", range: "2017 – 2018", rows: "502 rows", pct: "9%", dot: "bg-[#c2526e]" },
+                    { label: "Test", range: "2019 – Mar 2021", rows: "565 rows", pct: "10%", dot: "bg-[#4d082a]" },
                   ].map(({ label, range, rows, pct, dot }) => (
                     <div key={label} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3">
                       <div className={`h-2.5 w-2.5 shrink-0 rounded-full ${dot}`} />
@@ -306,7 +306,7 @@ export default function DissertationContent() {
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500">Empirical Results</p>
             <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">Test-set performance.</h2>
             <p className="mt-3 max-w-xl text-lg leading-8 text-slate-600">
-              Evaluated on held-out data from 2019&ndash;01&ndash;01 to 2021&ndash;12&ndash;31 (565 trading days), unseen during training or hyperparameter selection.
+              Evaluated on held-out data from 2019&ndash;01&ndash;01 to 2021&ndash;03&ndash;30 (565 trading days), unseen during training or hyperparameter selection.
             </p>
           </motion.div>
 
@@ -360,7 +360,7 @@ export default function DissertationContent() {
               </table>
               <div className="border-t border-slate-100 px-6 py-3">
                 <p className="text-xs text-slate-400">
-                  Test split: 2019&ndash;01&ndash;01 to 2021&ndash;12&ndash;31 &middot; 565 observations &middot; greyed rows = baselines
+                  Test split: 2019&ndash;01&ndash;01 to 2021&ndash;03&ndash;30 &middot; 565 observations &middot; greyed rows = baselines
                 </p>
               </div>
             </div>
@@ -460,7 +460,7 @@ export default function DissertationContent() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             {[
-              { n: "01", title: "Modest but measurable edge", body: "XGBoost achieves 53.6% balanced accuracy — a statistically significant 3.6 pp above random chance, consistent across seeds and confirmed by McNemar’s test." },
+              { n: "01", title: "A numerical edge, not a statistical one", body: "XGBoost achieves 53.6% balanced accuracy — a 3.6 pp edge above random chance, consistent across seeds — but McNemar’s test shows it is not statistically distinguishable from the majority baseline (χ² = 2.34, p = 0.126)." },
               { n: "02", title: "Magnitude is essentially unpredictable", body: "All regression models converge near R² ≈ 0, barely clearing the historical-mean baseline. The absolute size of next-day moves is dominated by noise." },
               { n: "03", title: "Direction beats magnitude", body: "Classifiers outperform their regression counterparts on identical data — binary directional structure is detectable even when continuous magnitude is not." },
               { n: "04", title: "No decisive deep-learning advantage", body: "LSTM and Transformer match but do not consistently beat XGBoost in classification. In regression, MLP edges out by a slim R² margin of 0.0025." },
@@ -508,9 +508,10 @@ export default function DissertationContent() {
               Statistical Significance &middot; McNemar&apos;s Test (&alpha; = 0.05)
             </p>
             <ul className="mt-3 space-y-1.5 text-xs leading-5 text-slate-600">
-              <li><span className="font-semibold text-slate-800">Logistic Reg. vs Majority</span> &mdash; significant (&chi;&sup2; = 12.23, p = 0.0005)</li>
-              <li><span className="font-semibold text-slate-800">LSTM vs Majority</span> &mdash; significant (&chi;&sup2; = 9.96, p = 0.0016)</li>
-              <li><span className="font-semibold text-slate-800">LSTM vs XGBoost</span> &mdash; significant (&chi;&sup2; = 4.0, p = 0.046)</li>
+              <li><span className="font-semibold text-slate-800">Logistic Reg. vs Majority</span> &mdash; significant, but worse than baseline (&chi;&sup2; = 12.23, p = 0.0005)</li>
+              <li><span className="font-semibold text-slate-800">LSTM vs Majority</span> &mdash; significant, but worse than baseline (&chi;&sup2; = 9.96, p = 0.0016)</li>
+              <li><span className="font-semibold text-slate-800">LSTM vs XGBoost</span> &mdash; significant, in favour of XGBoost (&chi;&sup2; = 4.0, p = 0.046)</li>
+              <li className="text-slate-400">XGBoost vs Majority &mdash; not significant (&chi;&sup2; = 2.34, p = 0.126)</li>
               <li className="text-slate-400">MLP vs Majority &mdash; not significant (p = 0.267)</li>
               <li className="text-slate-400">Transformer vs Majority &mdash; not significant (p = 0.211)</li>
             </ul>
