@@ -75,6 +75,32 @@
   letter-spacing: 0.15em;
 }
 
+/* ── LAYER 4 · PERFORMANCE WORK LINK (z:4) ─────────────────────── */
+.performanceLink {
+  position: absolute;
+  z-index: 4;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #f0dccb;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(240, 220, 203, 0.4);
+  transition: text-decoration-color 150ms ease-out, opacity 150ms ease-out;
+}
+
+.performanceLink:hover,
+.performanceLink:focus-visible {
+  text-decoration-color: rgba(240, 220, 203, 0.9);
+}
+
 /* ── MOBILE ─────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .section {
@@ -109,5 +135,10 @@
     left: 50%;
     top: 66%;
     transform: translate(-50%, -50%);
+  }
+
+  .performanceLink {
+    bottom: 3%;
+    font-size: 0.75rem;
   }
 }

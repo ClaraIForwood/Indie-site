@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import { DM_Serif_Display, Montserrat } from "next/font/google";
+import Popup from "./Popup";
 import styles from "./Hero.module.css";
 
 const dmSerif = DM_Serif_Display({
@@ -15,6 +19,8 @@ const montserrat = Montserrat({
 });
 
 export default function Hero() {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   return (
     <section className={styles.section} aria-label="Portfolio hero — Clara Forwood">
 
@@ -40,6 +46,17 @@ export default function Hero() {
       <span className={`${styles.nameWord} ${styles.nameLast} ${montserrat.className}`}>
         FORWOOD
       </span>
+
+      {/* Layer 4 · discoverable link to performance work, near the photo */}
+      <button
+        type="button"
+        onClick={() => setIsPopupOpen(true)}
+        className={styles.performanceLink}
+      >
+        Also making performance work →
+      </button>
+
+      <Popup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} imageSrc="/flowerPopUp.png" />
 
     </section>
   );
